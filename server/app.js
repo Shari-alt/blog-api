@@ -1,5 +1,6 @@
 const express = require("express");
 const db = require("./lib/db");
+const cors = require("cors");
 
 /*
   We create an express app calling
@@ -13,6 +14,12 @@ const app = express();
   https://expressjs.com/en/guide/using-middleware.html
 */
 app.use(express.json());
+app.use(cors());
+app.use((req, res, next) => {
+  const { method, url } = req;
+  console.log(`${method} ${url}`);
+  next();
+});
 
 /*
   Get all blog posts as an array of objects in the body of the response.
@@ -125,6 +132,6 @@ app.delete("/posts/:id", (req, res) => {
   We have to start the server. We make it listen on the port 4000
 
 */
-// app.listen(4000, () => {
-//   console.log("Listening on http://localhost:4000");
-// });
+app.listen(4000, () => {
+  console.log("Listening on http://localhost:4000");
+});
